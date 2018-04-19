@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace GraphQL\Upload;
 
 use GraphQL\Error\InvariantViolation;
@@ -14,7 +12,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class UploadMiddleware implements MiddlewareInterface
 {
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler)
     {
         $request = $this->processRequest($request);
 
@@ -28,9 +26,11 @@ class UploadMiddleware implements MiddlewareInterface
      *
      * @return ServerRequestInterface
      */
-    public function processRequest(ServerRequestInterface $request): ServerRequestInterface
+    public function processRequest(ServerRequestInterface $request)
     {
-        $contentType = $request->getHeader('content-type')[0] ?? '';
+        $contentType = empty($request->getHeader('content-type')[0]) 
+            ? '' 
+            : ($request->getHeader('content-type')[0];
 
         if (mb_stripos($contentType, 'multipart/form-data') !== false) {
             $this->validateParsedBody($request);
@@ -47,7 +47,7 @@ class UploadMiddleware implements MiddlewareInterface
      *
      * @return ServerRequestInterface
      */
-    private function parseUploadedFiles(ServerRequestInterface $request): ServerRequestInterface
+    private function parseUploadedFiles(ServerRequestInterface $request)
     {
         $bodyParams = $request->getParsedBody();
         if (!isset($bodyParams['map'])) {
@@ -85,7 +85,7 @@ class UploadMiddleware implements MiddlewareInterface
      *
      * @param ServerRequestInterface $request
      */
-    private function validateParsedBody(ServerRequestInterface $request): void
+    private function validateParsedBody(ServerRequestInterface $request)
     {
         $bodyParams = $request->getParsedBody();
 

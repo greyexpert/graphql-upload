@@ -28,9 +28,10 @@ class UploadMiddleware implements MiddlewareInterface
      */
     public function processRequest(ServerRequestInterface $request)
     {
-        $contentType = empty($request->getHeader('content-type')[0]) 
+        $contentTypeHeaders = $request->getHeader('content-type');
+        $contentType = empty($contentTypeHeaders[0])
             ? '' 
-            : ($request->getHeader('content-type')[0];
+            : $contentTypeHeaders[0];
 
         if (mb_stripos($contentType, 'multipart/form-data') !== false) {
             $this->validateParsedBody($request);
